@@ -26,7 +26,7 @@ export class LoginComponent {
   errorMessage: string = '';
   isLoading: boolean = false;
   showPassword: boolean = false;
-  private apiUrl = 'http://localhost:8082/api/auth';
+  private apiUrl = 'http://localhost:8085/api/auth';
 
   constructor(
     private fb: FormBuilder,
@@ -51,15 +51,14 @@ export class LoginComponent {
           localStorage.setItem('token', response.token);
           
           console.log('Connexion réussie!', response);
-          alert(`Bienvenue ${response.prenom} ${response.nom}!\nRôle: ${response.role}`);
           
           // Redirection selon le rôle
-          if (response.role === 'ADMIN') {
-            console.log('Redirection vers admin dashboard');
+          if (response.role === 'ADMIN' || response.role === 'ADMINISTRATEUR') {
+            this.router.navigate(['/admin-dashboard']);
           } else if (response.role === 'ENSEIGNANT') {
-            console.log('Redirection vers enseignant dashboard');
+            this.router.navigate(['/enseignant-dashboard']);
           } else {
-            console.log('Redirection vers etudiant dashboard');
+            alert(`Bienvenue ${response.prenom} ${response.nom}!\nRôle: ${response.role}\nDashboard étudiant à venir...`);
           }
         },
         error: (error) => {

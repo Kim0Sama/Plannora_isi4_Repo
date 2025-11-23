@@ -1,0 +1,184 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>PLANORA</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'overview'"
+        (click)="setActiveSection('overview')">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </span>
+        <span>Dashboard</span>
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'planning'"
+        (click)="setActiveSection('planning')">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </span>
+        <span>Mon Planning</span>
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'courses'"
+        (click)="setActiveSection('courses')">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+        </span>
+        <span>Mes Cours</span>
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'reservations'"
+        (click)="setActiveSection('reservations')">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </span>
+        <span>Réservations</span>
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'students'"
+        (click)="setActiveSection('students')">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+        <span>Étudiants</span>
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'notifications'"
+        (click)="setActiveSection('notifications')">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </span>
+        <span>Notifications</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item logout-btn" (click)="logout()">
+        <span class="nav-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </span>
+        <span>Déconnexion</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <h1>{{ getSectionTitle() }}</h1>
+      <div class="header-actions">
+        <span class="user-name">{{ userInfo?.prenom }} {{ userInfo?.nom }}</span>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="content-area">
+      <!-- Vue d'ensemble -->
+      <div *ngIf="activeSection === 'overview'" class="section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-info">
+              <h3>Cours cette semaine</h3>
+              <p class="stat-value">{{ plannings.length }}</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏰</div>
+            <div class="stat-info">
+              <h3>Heures totales</h3>
+              <p class="stat-value">{{ totalHeures }}h</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Planning -->
+      <div *ngIf="activeSection === 'planning'" class="section">
+        <div class="planning-grid">
+          <div class="planning-card" *ngFor="let planning of plannings">
+            <div class="planning-header">
+              <h3>{{ planning.cours }}</h3>
+              <span class="badge">{{ planning.jour }}</span>
+            </div>
+            <div class="planning-details">
+              <div class="detail-item">
+                <span class="icon">🏫</span>
+                <span>Salle {{ planning.salle }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="icon">🕐</span>
+                <span>{{ planning.heureDebut }} - {{ planning.heureFin }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mes Cours -->
+      <div *ngIf="activeSection === 'courses'" class="section">
+        <div class="placeholder-content">
+          <p>📚 Liste de vos cours à venir...</p>
+        </div>
+      </div>
+
+      <!-- Réservations -->
+      <div *ngIf="activeSection === 'reservations'" class="section">
+        <div class="placeholder-content">
+          <p>🏫 Vos réservations de salles à venir...</p>
+        </div>
+      </div>
+
+      <!-- Étudiants -->
+      <div *ngIf="activeSection === 'students'" class="section">
+        <div class="placeholder-content">
+          <p>👥 Liste de vos étudiants à venir...</p>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div *ngIf="activeSection === 'notifications'" class="section">
+        <div class="placeholder-content">
+          <p>🔔 Vos notifications à venir...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
